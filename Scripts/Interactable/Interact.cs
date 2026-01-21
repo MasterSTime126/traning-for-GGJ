@@ -1,8 +1,8 @@
 using UnityEngine;
-public class Interactble : MonoBehaviour
+public class Interact : MonoBehaviour
 {
     [SerializeField] Door door;
-    public virtual void Interact()
+    public virtual void OnInteract()
     {
         door.Interact();
     }

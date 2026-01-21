@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -36,7 +37,7 @@ public class PlayerMovement : MonoBehaviour
         transform.Translate(move);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
@@ -46,13 +47,14 @@ public class PlayerMovement : MonoBehaviour
         }
         if (collision.gameObject.TryGetComponent<Interact>(out Interact interact))
         {
-            interacts.Add(interact);
+            interacts.Append(interact);
             //CHEKPOINT change it later
         }
     }
 
     private void OnInteract()
     {
+        Debug.Log("Interacting with objects.");
         foreach (var interact in interacts)
         {
             interact.OnInteract();
