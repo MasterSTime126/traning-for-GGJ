@@ -10,14 +10,14 @@ public class PlayerMovement : MonoBehaviour
     private InputAction sprintAction;
     private InputActionAsset inputActionAsset;
 
-    void Start()
+    private void Start()
     {
         inputActionAsset = GetComponent<PlayerInput>().actions;
         moveAction = inputActionAsset.FindAction("Move");
         sprintAction = inputActionAsset.FindAction("Sprint");
     }
 
-    void Update()
+    private void Update()
     {
         float speed = moveSpeed;
         if (sprintAction.IsPressed())
@@ -28,5 +28,15 @@ public class PlayerMovement : MonoBehaviour
         Vector2 input = moveAction.ReadValue<Vector2>();
         Vector3 move = new Vector3(input.x, input.y, 0) * speed * Time.deltaTime;
         transform.Translate(move);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            Debug.Log("Collided with Negr!");
+            moveAction.Disable();
+            sprintAction.Disable();
+        }
     }
 }
