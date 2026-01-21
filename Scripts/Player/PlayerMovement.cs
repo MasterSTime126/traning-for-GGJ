@@ -6,8 +6,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float sprintSpeed = 7.5f;
 
+    private Interact[] interacts = new Interact[0];
+
     private InputAction moveAction;
     private InputAction sprintAction;
+    private InputAction interactAction;
     private InputActionAsset inputActionAsset;
 
     private void Start()
@@ -15,6 +18,9 @@ public class PlayerMovement : MonoBehaviour
         inputActionAsset = GetComponent<PlayerInput>().actions;
         moveAction = inputActionAsset.FindAction("Move");
         sprintAction = inputActionAsset.FindAction("Sprint");
+        interactAction = inputActionAsset.FindAction("Interact");
+
+        interactAction.performed += ctx => OnInteract();
     }
 
     private void Update()
@@ -38,5 +44,19 @@ public class PlayerMovement : MonoBehaviour
             moveAction.Disable();
             sprintAction.Disable();
         }
+        if (collision.gameObject.TryGetComponent<Interact>(out Interact interact))
+        {
+            interacts.Add(interact);
+            //CHEKPOINT change it later
+        }
     }
+
+    private void OnInteract()
+    {
+        foreach (var interact in interacts)
+        {
+            interact.OnInteract();
+        }
+    }
+
 }
